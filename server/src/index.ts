@@ -1,10 +1,11 @@
-import "/dotenv/config";
 import express from "express";
 import mongoose from "mongoose";
 import cors from "cors";
 import cookieParser from "cookie-parser";
 import authRoutes from "./routes/authRoutes";
-import { log } from "console";
+import dotenv from "dotenv";
+
+dotenv.config();
 
 const app = express();
 // middleware connecting server to react

@@ -1,4 +1,4 @@
-import express from "express";
+import express, { Request, Response } from "express";
 import { AuthRequest } from "../middleware/authMiddleware";
 import User, { IUser } from "../models/user";
 import { generateToken } from "../utils/jwtToken";
@@ -6,7 +6,7 @@ import { protect } from "../middleware/authMiddleware";
 
 const router = express.Router();
 
-router.post("/register", async (req, res) => {
+router.post("/register", async (req: Request, res: Response): Promise<any> => {
   const { username, email, password } = req.body;
 
   try {
@@ -23,7 +23,7 @@ router.post("/register", async (req, res) => {
     await user.save();
 
     // generate token
-    const token = generateToken(user._id.toString());
+    const token = generateToken(user.id);
 
     // set cookie
     res.cookie("token", token, {
@@ -43,7 +43,7 @@ router.post("/register", async (req, res) => {
   }
 });
 
-router.post("/login", async (req, res) => {
+router.post("/login", async (req: Request, res: Response): Promise<any> => {
   const { email, password } = req.body;
 
   try {
@@ -64,7 +64,7 @@ router.post("/login", async (req, res) => {
     }
 
     // generate token
-    const token = generateToken(user._id.toString());
+    const token = generateToken(user.id);
 
     // set cookie
     res.cookie("token", token, {
@@ -93,7 +93,7 @@ router.get("/logout", (_req, res) => {
 });
 
 // get current user
-router.get("/me", protect, async (req: AuthRequest, res) => {
+router.get("/me", protect, async (req: AuthRequest, res: Response) => {
   res.status(200).json({
     success: true,
     user: req.user,
