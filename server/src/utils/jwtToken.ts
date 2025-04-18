@@ -1,13 +1,25 @@
-import jwt from "jsonwebtoken";
+import jwt, { SignOptions } from "jsonwebtoken";
+import dotenv from "dotenv";
+import ms from "ms";
+
+dotenv.config();
 
 interface TokenPayload {
-  id: string;
+  id: String;
+}
+const JWT_SECRET = process.env.JWT_SECRET;
+if (!JWT_SECRET) {
+  throw new Error("JWT_SECRET is not defined in environment variables");
 }
 
+const JWT_EXPIRE: any = process.env.JWT_EXPIRE || "30d";
+
 const generateToken = (id: string): string => {
-  return jwt.sign({ id }, process.env.JWT_SECRET as string, {
-    expiresIn: process.env.JWT_EXPIRE,
-  });
+  const options: SignOptions = {
+    expiresIn: JWT_EXPIRE,
+  };
+
+  return jwt.sign({ id }, JWT_SECRET, options);
 };
 
 const verifyToken = (token: string): TokenPayload => {
