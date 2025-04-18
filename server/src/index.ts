@@ -1,17 +1,15 @@
+import "/dotenv/config";
 import express from "express";
 import mongoose from "mongoose";
 import cors from "cors";
 import cookieParser from "cookie-parser";
-import authRoutes from "./routes/authRoutes";
-import dotenv from "dotenv";
-
-dotenv.config();
+import authRoutes from "../src/routes/authRoutes";
 
 const app = express();
 // middleware connecting server to react
 app.use(
   cors({
-    origin: "http://localhost:3000",
+    origin: "http://localhost:5173",
     credentials: true,
   })
 );
